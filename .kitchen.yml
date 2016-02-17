@@ -1,0 +1,18 @@
+driver:
+  name: vagrant
+  network:
+    - ["private_network", {ip: "192.168.33.33"}]
+
+provisioner:
+  name: chef_zero
+  require_chef_omnibus: true
+
+platforms:
+  - name: ubuntu-14.04
+
+suites:
+  - name: git
+    data_bags_path: test/data_bags
+    run_list:
+      - recipe[apt]
+      - recipe[anchor-test::git]

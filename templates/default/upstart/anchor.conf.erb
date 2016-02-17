@@ -1,0 +1,24 @@
+description "Anchor daemon"
+
+start on (filesystem and net-device-up IFACE!=lo)
+stop on runlevel [!2345]
+
+respawn
+respawn limit 10 5
+
+env HOME=<%= @anchor_python_home %>
+
+script
+  /usr/bin/uwsgi_python27 \
+  --master \
+  --die-on-term \
+  --pythonpath <%= @anchor_python_home %>/ \
+  --virtualenv <%= @anchor_virtualenv %>/ \
+  --chdir <%= @anchor_python_home %>/ \
+  --pecan config.py \
+  --enable-threads \
+  --uid <%= @anchor_user %> \
+  --gid <%= @anchor_group %> \
+  -p 4 \
+  --http-socket 127.0.0.1:5016
+end script
