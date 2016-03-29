@@ -4,6 +4,11 @@ module AnchorCookbook
 
     provides :anchor_service, platform: 'ubuntu'
 
+    property :anchor_home, String, default: '/opt/anchor/current'
+    property :anchor_venv, String, default: '/opt/anchor/.venv'
+    property :username, String, default: 'anchor'
+    property :groupname, String, default: 'anchor'
+
     action :start do
       package 'uwsgi-plugin-python'
 
@@ -14,12 +19,13 @@ module AnchorCookbook
         mode '0644'
         cookbook 'anchor'
         variables(
-          anchor_python_home: '/opt/anchor/current',
-          anchor_virtualenv: '/opt/anchor/.venv',
-          anchor_user: 'anchor',
-          anchor_group: 'anchor'
+          anchor_python_home: new_resource.anchor_home,
+          anchor_virtualenv: new_resource.anchor_venv,
+          anchor_user: new_resource.username,
+          anchor_group: new_resource.groupname
         )
         action :create
+        notifies :restart, "service[anchor]"
       end
 
       service 'anchor' do
