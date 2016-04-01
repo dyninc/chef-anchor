@@ -25,7 +25,7 @@ module AnchorCookbook
           anchor_group: new_resource.groupname
         )
         action :create
-        notifies :restart, "service[anchor]"
+        notifies :restart, 'service[anchor]'
       end
 
       service 'anchor' do

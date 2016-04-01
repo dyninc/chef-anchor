@@ -35,6 +35,10 @@ module AnchorCookbook
         home new_resource.deploy_to
       end
 
+      # Used in anchor_python_package to set correct user/group
+      node.default['anchor']['username'] = new_resource.username
+      node.default['anchor']['groupname'] = new_resource.groupname
+
       url = new_resource.repourl || default_git_url
 
       deploy 'anchor' do
@@ -42,7 +46,7 @@ module AnchorCookbook
         user new_resource.username
         deploy_to new_resource.deploy_to
         symlink_before_migrate({})
-        purge_before_symlink [ 'CA', 'config.json' ]
+        purge_before_symlink ['CA', 'config.json']
         symlinks 'CA' => 'CA', 'config.json' => 'config.json'
         migrate false
         action :deploy
@@ -52,6 +56,9 @@ module AnchorCookbook
         user new_resource.username
         group new_resource.groupname
       end
+
+      # Used in anchor_python_package to set correct venv path
+      node.default['anchor']['venv_path'] = "#{new_resource.deploy_to}/.venv"
 
       pip_requirements "#{new_resource.deploy_to}/current/" do
         user new_resource.username

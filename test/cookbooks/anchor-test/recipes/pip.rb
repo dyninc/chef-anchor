@@ -7,7 +7,7 @@ anchor_installation_pip '/opt/anchor'
 anchorconf = data_bag_item('anchor', 'config')
 anchorcerts = chef_vault_item('anchor', 'ca')
 
-file "/opt/anchor/config.json" do
+file '/opt/anchor/config.json' do
   owner 'anchor'
   group 'anchor'
   mode '0644'
@@ -16,7 +16,7 @@ file "/opt/anchor/config.json" do
   notifies :restart, 'anchor_service[anchor]'
 end
 
-cookbook_file "/opt/anchor/config.py" do
+cookbook_file '/opt/anchor/config.py' do
   owner 'anchor'
   group 'anchor'
   action :create

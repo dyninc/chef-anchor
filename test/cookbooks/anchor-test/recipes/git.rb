@@ -12,7 +12,7 @@ end
 anchorconf = data_bag_item('anchor', 'config')
 anchorcerts = chef_vault_item('anchor', 'ca')
 
-file "/opt/anchor/shared/config.json" do
+file '/opt/anchor/shared/config.json' do
   owner 'anchor'
   group 'anchor'
   mode '0644'

@@ -5,7 +5,7 @@ module AnchorCookbook
     provides :anchor_proxy_nginx
 
     property :hostname, String, name_property: true, desired_state: false
-    property :ssl, [ TrueClass, FalseClass ], default: false, desired_state: false
+    property :ssl, [TrueClass, FalseClass], default: false, desired_state: false
 
     default_action :enable
 
