@@ -14,7 +14,7 @@ module AnchorCookbook
         version new_resource.version
         user node["anchor"]["username"]
         group node["anchor"]["groupname"]
-        virtualenv node["anchor"]["venv_path"]
+        python node["anchor"]["python_path"]
         action :install
       end
     end
@@ -24,14 +24,14 @@ module AnchorCookbook
         version new_resource.version
         user node["anchor"]["username"]
         group node["anchor"]["groupname"]
-        virtualenv node["anchor"]["venv_path"]
+        python node["anchor"]["python_path"]
         action :upgrade
       end
     end
 
     action :remove do
       python_package new_resource.package_name do
-        virtualenv node["anchor"]["venv_path"]
+        python node["anchor"]["python_path"]
         action :remove
       end
     end

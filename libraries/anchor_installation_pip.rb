@@ -49,6 +49,7 @@ module AnchorCookbook
 
       # Used in anchor_python_package to set correct venv path
       node.default['anchor']['venv_path'] = new_resource.deploy_to
+      node.default['anchor']['python_path'] = "#{new_resource.deploy_to}/bin/python"
 
       python_package 'anchor' do
         virtualenv new_resource.deploy_to
