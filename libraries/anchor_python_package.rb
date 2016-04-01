@@ -35,3 +35,5 @@ module AnchorCookbook
         action :remove
       end
     end
+  end
+end

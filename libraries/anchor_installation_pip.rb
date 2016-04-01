@@ -30,6 +30,10 @@ module AnchorCookbook
         home new_resource.deploy_to
       end
 
+      # Used in anchor_python_package to set correct user/group
+      node.default['anchor']['username'] = new_resource.username
+      node.default['anchor']['groupname'] = new_resource.groupname
+
       directory new_resource.deploy_to do
         owner new_resource.username
         group new_resource.groupname
@@ -42,6 +46,9 @@ module AnchorCookbook
         group new_resource.groupname
         pip_version true
       end
+
+      # Used in anchor_python_package to set correct venv path
+      node.default['anchor']['venv_path'] = new_resource.deploy_to
 
       python_package 'anchor' do
         virtualenv new_resource.deploy_to
