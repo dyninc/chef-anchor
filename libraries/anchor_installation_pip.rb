@@ -1,19 +1,15 @@
 module AnchorCookbook
-  class AnchorInstallationGit < ChefCompat::Resource
+  class AnchorInstallationPip < ChefCompat::Resource
     use_automatic_resource_name
 
     provides :anchor_installation
 
-    property :repourl, String, desired_state: false
     property :username, String, default: 'anchor'
     property :groupname, String, default: 'anchor'
+    property :version, String, default: 'latest'
     property :deploy_to, String, name_property: true
 
     default_action :create
-
-    def default_git_url
-      'git://git.openstack.org/openstack/anchor'
-    end
 
     def dependencies
       ['build-essential', 'python-dev', 'libffi-dev', 'libssl-dev']
@@ -21,7 +17,6 @@ module AnchorCookbook
 
     action :create do
       python_runtime '2'
-      package 'git'
 
       dependencies.each do |pkg|
         package pkg
@@ -39,31 +34,25 @@ module AnchorCookbook
       node.default['anchor']['username'] = new_resource.username
       node.default['anchor']['groupname'] = new_resource.groupname
 
-      url = new_resource.repourl || default_git_url
-
-      deploy 'anchor' do
-        repo url
-        user new_resource.username
-        deploy_to new_resource.deploy_to
-        symlink_before_migrate({})
-        purge_before_symlink ['CA', 'config.json']
-        symlinks 'CA' => 'CA', 'config.json' => 'config.json'
-        migrate false
-        action :deploy
+      directory new_resource.deploy_to do
+        owner new_resource.username
+        group new_resource.groupname
+        mode 0755
+        action :create
       end
 
-      python_virtualenv "#{new_resource.deploy_to}/.venv" do
+      python_virtualenv new_resource.deploy_to do
         user new_resource.username
         group new_resource.groupname
+        pip_version true
       end
 
       # Used in anchor_python_package to set correct venv path
-      node.default['anchor']['venv_path'] = "#{new_resource.deploy_to}/.venv"
+      node.default['anchor']['venv_path'] = new_resource.deploy_to
 
-      pip_requirements "#{new_resource.deploy_to}/current/" do
+      python_package 'anchor' do
+        virtualenv new_resource.deploy_to
         user new_resource.username
-        group new_resource.groupname
-        virtualenv "#{new_resource.deploy_to}/.venv"
       end
     end
 

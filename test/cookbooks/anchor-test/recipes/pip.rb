@@ -1,18 +1,13 @@
 require 'json'
 
 include_recipe 'chef-vault'
-include_recipe 'poise-python'
 
-python_runtime '2'
-
-anchor_installation_git '/opt/anchor' do
-  repourl 'git://git.openstack.org/openstack/anchor'
-end
+anchor_installation_pip '/opt/anchor'
 
 anchorconf = data_bag_item('anchor', 'config')
 anchorcerts = chef_vault_item('anchor', 'ca')
 
-file '/opt/anchor/shared/config.json' do
+file '/opt/anchor/config.json' do
   owner 'anchor'
   group 'anchor'
   mode '0644'
@@ -21,13 +16,22 @@ file '/opt/anchor/shared/config.json' do
   notifies :restart, 'anchor_service[anchor]'
 end
 
+cookbook_file '/opt/anchor/config.py' do
+  owner 'anchor'
+  group 'anchor'
+  action :create
+  notifies :restart, 'anchor_service[anchor]'
+end
+
 anchor_ca 'myca' do
-  path '/opt/anchor/shared/CA'
+  path '/opt/anchor/CA'
   certificate anchorcerts['certificate']
   key anchorcerts['key']
 end
 
 anchor_service 'anchor' do
+  anchor_home '/opt/anchor'
+  anchor_venv '/opt/anchor'
   action :start
 end
 

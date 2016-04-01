@@ -6,6 +6,7 @@ driver:
 provisioner:
   name: chef_zero
   require_chef_omnibus: true
+  
 
 platforms:
   - name: ubuntu-14.04
@@ -16,3 +17,8 @@ suites:
     run_list:
       - recipe[apt]
       - recipe[anchor-test::git]
+  - name: pip
+    data_bags_path: test/data_bags
+    run_list:
+      - recipe[apt]
+      - recipe[anchor-test::pip]
