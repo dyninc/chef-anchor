@@ -16,7 +16,7 @@ module AnchorCookbook
     end
 
     action :create do
-      python_runtime '2'
+      python_runtime '3'
 
       dependencies.each do |pkg|
         package pkg

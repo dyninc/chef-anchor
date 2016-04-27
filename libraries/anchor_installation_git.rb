@@ -20,7 +20,7 @@ module AnchorCookbook
     end
 
     action :create do
-      python_runtime '2'
+      python_runtime '3'
       package 'git'
 
       dependencies.each do |pkg|
