@@ -1,5 +1,5 @@
 name 'anchor'
-version '0.0.3'
+version '0.0.4'
 
 depends 'apt'
 depends 'nginx', '~> 2.7.6'
