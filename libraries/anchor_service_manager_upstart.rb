@@ -10,7 +10,7 @@ module AnchorCookbook
     property :groupname, String, default: 'anchor'
 
     action :start do
-      package 'uwsgi-plugin-python'
+      package 'uwsgi-plugin-python3'
 
       template '/etc/init/anchor.conf' do
         source 'upstart/anchor.conf.erb'
