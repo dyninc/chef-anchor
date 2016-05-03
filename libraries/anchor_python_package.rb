@@ -12,9 +12,9 @@ module AnchorCookbook
     action :install do
       python_package new_resource.package_name do
         version new_resource.version
-        user node["anchor"]["username"]
-        group node["anchor"]["groupname"]
-        python node["anchor"]["python_path"]
+        user node['anchor']['username']
+        group node['anchor']['groupname']
+        python node['anchor']['python_path']
         action :install
       end
     end
@@ -22,16 +22,16 @@ module AnchorCookbook
     action :upgrade do
       python_package new_resource.package_name do
         version new_resource.version
-        user node["anchor"]["username"]
-        group node["anchor"]["groupname"]
-        python node["anchor"]["python_path"]
+        user node['anchor']['username']
+        group node['anchor']['groupname']
+        python node['anchor']['python_path']
         action :upgrade
       end
     end
 
     action :remove do
       python_package new_resource.package_name do
-        python node["anchor"]["python_path"]
+        python node['anchor']['python_path']
         action :remove
       end
     end
