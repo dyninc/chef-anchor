@@ -41,10 +41,26 @@ module AnchorCookbook
         action :create
       end
 
+      directory "#{new_resource.deploy_to}/certs" do
+        owner new_resource.username
+        group new_resource.groupname
+        mode 0700
+        action :create
+      end
+
       python_virtualenv new_resource.deploy_to do
         user new_resource.username
         group new_resource.groupname
         pip_version true
+        notifies :run, 'execute[chown-venv]', :immediately
+      end
+
+      # Work around for https://github.com/poise/poise-python/issues/42
+      execute 'chown-venv' do
+        command "chown -R #{new_resource.username}:#{new_resource.groupname} " \
+                "#{new_resource.deploy_to}/lib"
+        user 'root'
+        action :nothing
       end
 
       # Used in anchor_python_package to set correct venv path
@@ -54,6 +70,7 @@ module AnchorCookbook
       python_package 'anchor' do
         virtualenv new_resource.deploy_to
         user new_resource.username
+        group new_resource.groupname
       end
     end
 
