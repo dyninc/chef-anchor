@@ -9,7 +9,7 @@ respawn limit 10 5
 env HOME=<%= @anchor_python_home %>
 
 script
-  /usr/bin/uwsgi_python27 \
+  /usr/bin/uwsgi_python34 \
   --master \
   --die-on-term \
   --pythonpath <%= @anchor_python_home %>/ \

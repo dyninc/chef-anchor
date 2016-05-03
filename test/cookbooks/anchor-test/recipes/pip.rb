@@ -38,3 +38,18 @@ end
 anchor_proxy_nginx 'localhost' do
   ssl false
 end
+
+anchor_certificate 'test.test.53151sa.net' do
+  country 'UK'
+  state 'S Gloucs'
+  city 'Bristol'
+  organisation 'Dyn'
+  department 'Hivecast'
+  email 'test@test.com'
+  bits 2048
+  path '/tmp'
+  anchorurl 'http://localhost:5016/v1/sign/default'
+  anchoruser 'myusername'
+  anchorsecret 'simplepassword'
+  action :create
+end
