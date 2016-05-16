@@ -43,7 +43,7 @@ module AnchorCookbook
     property :anchorsecret, String, required: true, desired_state: false
 
     # Where to place the certificate and key, owner, permissions etc.
-    property :path, String, required: true, desired_state: false
+    property :path, String, default: "", desired_state: false
     property :keyfile, String, default: 'key.pem'
     property :certfile, String, default: 'certificate.pem'
     property :owner, [String, Integer], default: 'root'
