@@ -1,6 +1,7 @@
 name 'anchor'
 version '0.0.7'
-maintainer 'pthomas@dyn.com'
+maintainer 'Paul Thomas'
+maintainer_email 'pthomas@dyn.com'
 
 depends 'apt'
 depends 'nginx', '~> 2.7.6'
