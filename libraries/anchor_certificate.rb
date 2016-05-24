@@ -62,16 +62,19 @@ module AnchorCookbook
       # Only if the certificate and key exist attempt to populate
       # the current_resource with the values
       if ::File.exist?(keypath) && ::File.exist?(certpath)
+        begin
+          certificate = OpenSSL::X509::Certificate.new IO.read(certpath)
+          key = OpenSSL::PKey::RSA.new IO.read(keypath)
 
-        certificate = OpenSSL::X509::Certificate.new IO.read(certpath)
-        key = OpenSSL::PKey::RSA.new IO.read(keypath)
+          # Check the key matches the certificate
+          current_value_does_not_exist! unless certificate.check_private_key(key)
 
-        # Check the key matches the certificate
-        current_value_does_not_exist! unless certificate.check_private_key(key)
-
-        # Load each field in the SSL certificate into the current_resource
-        # for comparison
-        certificate.subject.to_a.each { |field| send(field[0], field[1]) }
+          # Load each field in the SSL certificate into the current_resource
+          # for comparison
+          certificate.subject.to_a.each { |field| send(field[0], field[1]) }
+        rescue
+          current_value_does_not_exist!
+        end
       else
         Chef::Log.debug "Certificate or Key file did not exist"
         current_value_does_not_exist!
