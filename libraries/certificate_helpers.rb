@@ -1,3 +1,6 @@
+require 'net/https'
+require 'uri'
+
 module AnchorCookbook
   module AnchorHelpers
     module Certificate
@@ -24,17 +27,33 @@ module AnchorCookbook
         request
       end
 
-      def submit_csr (request, anchor={})
+      # rubocop:disable MethodLength
+      def submit_csr(request, anchor = {})
         # Send the CSR to Anchor
-        Net::HTTP.post_form(
-          URI.parse(anchor[:url]),
-          {
-            user: anchor[:user],
-            secret: anchor[:secret],
-            encoding: 'PEM',
-            csr: request.to_pem
-          }
-        ).body
+        uri = URI.parse(anchor[:url])
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE unless anchor[:verifyssl]
+        params = {
+          user: anchor[:user],
+          secret: anchor[:secret],
+          encoding: 'PEM',
+          csr: request.to_pem
+        }
+        req = Net::HTTP::Post.new(uri.request_uri)
+        req.set_form_data(params)
+        result = http.request(req).body
+
+        # Try to create a certificate from the result
+        # to confirm its valid otherwise fail
+        begin
+          OpenSSL::X509::Certificate.new(result)
+        rescue
+          Chef::Log.error "Response from Anchor was not a valid certificate"
+          Chef::Log.error result
+          Chef::Application.fatal! 'Unable to proceed due to invalid response'
+        end
+        result
       end
     end
   end

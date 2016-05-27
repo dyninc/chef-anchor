@@ -5,6 +5,7 @@ stop on runlevel [!2345]
 
 respawn
 respawn limit 10 5
+post-stop exec sleep 1
 
 env HOME=<%= @anchor_python_home %>
 
