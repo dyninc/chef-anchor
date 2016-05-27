@@ -26,7 +26,7 @@ module AnchorCookbook
 
       def submit_csr (request, anchor={})
         # Send the CSR to Anchor
-        Net::HTTP.post_form(
+        result = Net::HTTP.post_form(
           URI.parse(anchor[:url]),
           {
             user: anchor[:user],
@@ -35,6 +35,15 @@ module AnchorCookbook
             csr: request.to_pem
           }
         ).body
+
+        # Try to create a certificate from the result
+        # to confirm its valid otherwise fail
+        begin
+          OpenSSL::X509::Certificate.new(result)
+        rescue
+          Chef::Application.fatal! "Generating the SSL certificate for #{request.cn} failed, unable to proceed"
+        end
+        result
       end
     end
   end
