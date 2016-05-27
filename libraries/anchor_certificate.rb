@@ -17,22 +17,22 @@ module AnchorCookbook
     property :cn, String, name_property: true
     property :country, String, required: true
     property :state, String, required: true
-    property :city, String, default: ""
-    property :organisation, String, default: ""
-    property :department, String, default: ""
-    property :email, String, default: ""
+    property :city, String, default: ''
+    property :organisation, String, default: ''
+    property :department, String, default: ''
+    property :email, String, default: ''
 
     # For my american colleagues
     alias_method :organization, :organisation
 
     # These map the friendly names above to the OpenSSL field names
-    alias :C :country
-    alias :ST :state
-    alias :L :city
-    alias :O :organisation
-    alias :OU :department
-    alias :CN :cn
-    alias :emailAddress :email
+    alias_method :C, :country
+    alias_method :ST, :state
+    alias_method :L, :city
+    alias_method :O, :organisation
+    alias_method :OU, :department
+    alias_method :CN, :cn
+    alias_method :emailAddress, :email
 
     # Size for the private key
     property :bits, Integer, default: 2048
@@ -44,7 +44,7 @@ module AnchorCookbook
     property :verifyssl, [TrueClass, FalseClass], default: false, desired_state: false
 
     # Where to place the certificate and key, owner, permissions etc.
-    property :path, String, default: "", desired_state: false
+    property :path, String, default: '', desired_state: false
     property :keyfile, String, default: 'key.pem'
     property :certfile, String, default: 'certificate.pem'
     property :owner, [String, Integer], default: 'root'
@@ -77,7 +77,7 @@ module AnchorCookbook
           current_value_does_not_exist!
         end
       else
-        Chef::Log.debug "Certificate or Key file did not exist"
+        Chef::Log.debug 'Certificate or Key file did not exist'
         current_value_does_not_exist!
       end
     end

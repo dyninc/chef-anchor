@@ -30,7 +30,7 @@ module AnchorCookbook
 
       service 'anchor' do
         provider Chef::Provider::Service::Upstart
-        supports status: true
+        ignore_failure true
         action :start
       end
     end
