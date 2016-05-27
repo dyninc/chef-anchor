@@ -5,6 +5,8 @@ module AnchorCookbook
 
     provides :anchor_service
 
-    property :service_manager, %w(upstart), default: 'upstart', desired_state: false
+    property :service_manager, %w(upstart),
+             default: 'upstart',
+             desired_state: false
   end
 end
