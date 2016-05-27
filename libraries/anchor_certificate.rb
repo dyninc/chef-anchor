@@ -41,7 +41,7 @@ module AnchorCookbook
     property :anchorurl, String, required: true, desired_state: false
     property :anchoruser, String, required: true, desired_state: false
     property :anchorsecret, String, required: true, desired_state: false
-    property :verifyssl, [TrueClass, FalseClass], default: false, desired_state: false
+    property :verifyssl, [TrueClass, FalseClass], default: true, desired_state: false
 
     # Where to place the certificate and key, owner, permissions etc.
     property :path, String, default: '', desired_state: false
