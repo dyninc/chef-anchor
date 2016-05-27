@@ -12,7 +12,7 @@ module AnchorCookbook
     provides :anchor_certificate
 
     ################
-    ## Properties ##
+    ## Properties ##
     ################
     property :cn, String, name_property: true
     property :country, String, required: true
@@ -22,8 +22,8 @@ module AnchorCookbook
     property :department, String, default: ""
     property :email, String, default: ""
 
-    # For my american colleagues
-    alias :organization :organisation
+    # For my american colleagues
+    alias_method :organization, :organisation
 
     # These map the friendly names above to the OpenSSL field names
     alias :C :country
@@ -41,6 +41,7 @@ module AnchorCookbook
     property :anchorurl, String, required: true, desired_state: false
     property :anchoruser, String, required: true, desired_state: false
     property :anchorsecret, String, required: true, desired_state: false
+    property :verifyssl, [TrueClass, FalseClass], default: false, desired_state: false
 
     # Where to place the certificate and key, owner, permissions etc.
     property :path, String, default: "", desired_state: false
@@ -51,7 +52,7 @@ module AnchorCookbook
     property :mode, [String, Integer], default: 0600
 
     #########################
-    ## Load current value  ##
+    ## Load current value  ##
     #########################
 
     load_current_value do |new_resource|
@@ -67,7 +68,7 @@ module AnchorCookbook
           key = OpenSSL::PKey::RSA.new IO.read(keypath)
 
           # Check the key matches the certificate
-          current_value_does_not_exist! unless certificate.check_private_key(key)
+          current_value_does_not_exist! unless certificate.check_private_key key
 
           # Load each field in the SSL certificate into the current_resource
           # for comparison
@@ -82,7 +83,7 @@ module AnchorCookbook
     end
 
     #############
-    ## Actions ##
+    ## Actions ##
     #############
 
     action :create do
@@ -101,13 +102,16 @@ module AnchorCookbook
         # Generate a new signing request
         request = generate_csr(new_resource, key)
 
+        Chef::Log.warn("Trying to request verify ssl is #{new_resource.verifyssl}")
+
         # Submit the CSR to anchor
         certificate = submit_csr(
           request,
           {
             url: new_resource.anchorurl,
             user: new_resource.anchoruser,
-            secret: new_resource.anchorsecret
+            secret: new_resource.anchorsecret,
+            verifyssl: new_resource.verifyssl
           }
         )
       end
