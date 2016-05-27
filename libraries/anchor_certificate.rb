@@ -102,8 +102,6 @@ module AnchorCookbook
         # Generate a new signing request
         request = generate_csr(new_resource, key)
 
-        Chef::Log.warn("Trying to request verify ssl is #{new_resource.verifyssl}")
-
         # Submit the CSR to anchor
         certificate = submit_csr(
           request,
