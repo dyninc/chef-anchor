@@ -32,8 +32,10 @@ module AnchorCookbook
         # Send the CSR to Anchor
         uri = URI.parse(anchor[:url])
         http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE unless anchor[:verifyssl]
+        if uri.scheme == 'https'
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE unless anchor[:verifyssl]
+        end
         params = {
           user: anchor[:user],
           secret: anchor[:secret],
