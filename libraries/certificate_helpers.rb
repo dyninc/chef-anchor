@@ -22,8 +22,17 @@ module AnchorCookbook
         request.version = 0
         request.subject = generate_subject(new_resource)
         request.public_key = key.public_key
-        request.sign(key, OpenSSL::Digest::SHA256.new)
 
+        ef = OpenSSL::X509::ExtensionFactory.new
+        extensions = []
+        new_resource.extensions.each_pair do |oid, value|
+          extensions.push ef.create_extension(oid, value)
+        end
+
+        attrval = OpenSSL::ASN1::Set([OpenSSL::ASN1::Sequence(extensions)])
+        request.add_attribute(OpenSSL::X509::Attribute.new('extReq', attrval))
+
+        request.sign(key, OpenSSL::Digest::SHA256.new)
         request
       end
 

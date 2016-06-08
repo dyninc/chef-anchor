@@ -21,6 +21,7 @@ module AnchorCookbook
     property :organisation, String, default: ''
     property :department, String, default: ''
     property :email, String, default: ''
+    property :extensions, Hash, default: {}
 
     # For my american colleagues
     alias_method :organization, :organisation
