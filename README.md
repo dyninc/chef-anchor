@@ -36,6 +36,8 @@ See `test/cookbooks/anchor-test/recipes/git.rb`
 
 ## Resource Details
 
+For more full examples see https://github.com/dyninc/chef-anchor/blob/master/test/cookbooks/anchor-test/recipes/git.rb or https://github.com/dyninc/chef-anchor/blob/master/test/cookbooks/anchor-test/recipes/pip.rb.
+
 ### anchor_ca
 
 The `anchor_ca` resource configures the CA certificate and key for the anchor service.
@@ -45,6 +47,14 @@ anchor_ca 'myca' do
   certificate '----- my certificate -----'
   key '----- my private key -----'
 end
+```
+
+### anchor_installation_pip
+
+Installs anchor from pip
+
+```ruby
+anchor_installation_pip '/opt/anchor'
 ```
 
 ### anchor_installation_git
