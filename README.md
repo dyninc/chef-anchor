@@ -4,7 +4,7 @@ The anchor cookbook is a library cookbook that provides resources for dealing wi
 
 ## Scope
 
-This cookbook installs anchor and configures it. It is currently only supported running on ubuntu 14.04 using upstart for process control and nginx as a frontend proxy to a backend uwsgi server with the anchor app. Deployment of the anchor app happens directly from the openstack GIT repository.
+This cookbook installs anchor and configures it. It is currently only supported running on ubuntu 14.04 using upstart for process control and nginx as a frontend proxy to a backend uwsgi server with the anchor app. Deployment of the anchor app happens directly from the openstack GIT repository or from pip.
 
 ## Requirements
 
@@ -74,6 +74,28 @@ Configures the anchor service to run (currently only supports upstart through `a
 ```ruby
 anchor_service 'anchor' do
   action :start
+end
+```
+
+### anchor_certificate
+
+Can be used on a client to generate a certificate from Anchor
+
+```ruby
+anchor_certificate 'test.test.test.net' do
+  country 'UK'
+  state 'S Gloucs'
+  city 'Bristol'
+  organisation 'Dyn'
+  department 'Testers'
+  email 'test@test.com'
+  bits 2048
+  extensions ('extendedKeyUsage' => 'serverAuth,clientAuth')
+  path '/tmp'
+  anchorurl 'http://localhost:5016/v1/sign/default'
+  anchoruser 'myusername'
+  anchorsecret 'simplepassword'
+  action :create
 end
 ```
 
