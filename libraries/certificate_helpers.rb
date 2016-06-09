@@ -60,7 +60,7 @@ module AnchorCookbook
         begin
           OpenSSL::X509::Certificate.new(result)
         rescue
-          Chef::Log.error "Response from Anchor was not a valid certificate"
+          Chef::Log.error 'Response from Anchor was not a valid certificate'
           Chef::Log.error result
           Chef::Application.fatal! 'Unable to proceed due to invalid response'
         end

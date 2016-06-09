@@ -106,12 +106,10 @@ module AnchorCookbook
         # Submit the CSR to anchor
         certificate = submit_csr(
           request,
-          {
-            url: new_resource.anchorurl,
-            user: new_resource.anchoruser,
-            secret: new_resource.anchorsecret,
-            verifyssl: new_resource.verifyssl
-          }
+          url: new_resource.anchorurl,
+          user: new_resource.anchoruser,
+          secret: new_resource.anchorsecret,
+          verifyssl: new_resource.verifyssl
         )
       end
 
