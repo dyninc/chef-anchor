@@ -93,6 +93,7 @@ module AnchorCookbook
       # Then try to load them in the converge_if_changed block
       key = nil
       certificate = nil
+      request = nil
 
       keyfile = ::File.join(new_resource.path, new_resource.keyfile)
       certfile = ::File.join(new_resource.path, new_resource.certfile)
