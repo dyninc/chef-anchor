@@ -48,6 +48,7 @@ module AnchorCookbook
     property :path, String, default: '', desired_state: false
     property :keyfile, String, default: 'key.pem'
     property :certfile, String, default: 'certificate.pem'
+    property :csrfile, String, default: 'certificate.csr'
     property :owner, [String, Integer], default: 'root'
     property :group, [String, Integer], default: 'root'
     property :mode, [String, Integer], default: 0600
@@ -95,6 +96,7 @@ module AnchorCookbook
 
       keyfile = ::File.join(new_resource.path, new_resource.keyfile)
       certfile = ::File.join(new_resource.path, new_resource.certfile)
+      csrfile = ::File.join(new_resource.path, new_resource.csrfile)
 
       converge_if_changed do
         # Key for the new certificate signing request
@@ -127,6 +129,15 @@ module AnchorCookbook
         group new_resource.group
         mode new_resource.mode
         content certificate unless certificate.nil?
+        sensitive true
+        action :create
+      end
+
+      file csrfile do
+        owner new_resource.owner
+        group new_resource.group
+        mode new_resource.mode
+        content request.to_pem unless request.nil?
         sensitive true
         action :create
       end
