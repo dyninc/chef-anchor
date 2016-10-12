@@ -1,5 +1,5 @@
 name 'anchor'
-version '0.1.1'
+version '0.1.2'
 maintainer 'Paul Thomas'
 maintainer_email 'pthomas@dyn.com'
 
