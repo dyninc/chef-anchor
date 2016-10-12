@@ -37,6 +37,7 @@ end
 
 anchor_proxy_nginx 'localhost' do
   ssl false
+  serve_certs true
 end
 
 anchor_certificate 'test.test.53151sa.net' do
@@ -51,5 +52,6 @@ anchor_certificate 'test.test.53151sa.net' do
   anchorurl 'http://localhost:5016/v1/sign/default'
   anchoruser 'myusername'
   anchorsecret 'simplepassword'
+  verifyssl false
   action :create
 end

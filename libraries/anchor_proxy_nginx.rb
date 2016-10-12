@@ -6,6 +6,7 @@ module AnchorCookbook
 
     property :hostname, String, name_property: true, desired_state: false
     property :ssl, [TrueClass, FalseClass], default: false, desired_state: false
+    property :serve_certs, [TrueClass, FalseClass], default: false
 
     default_action :enable
 
@@ -19,7 +20,8 @@ module AnchorCookbook
         mode 0644
         variables(
           ssl: new_resource.ssl,
-          hostname: new_resource.hostname
+          hostname: new_resource.hostname,
+          serve_certs: new_resource.serve_certs
         )
         cookbook 'anchor'
         action :create
