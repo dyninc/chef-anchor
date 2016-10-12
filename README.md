@@ -29,7 +29,9 @@ See `test/cookbooks/anchor-test/recipes/git.rb`
 
 ## Resources Overview
 * `anchor_ca`
+* `anchor_certificate`
 * `anchor_installation_git`
+* `anchor_installation_pip`
 * `anchor_proxy_nginx`
 * `anchor_service`
   * `anchor_service_manager_upstart`
